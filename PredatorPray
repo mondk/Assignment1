@@ -4,7 +4,7 @@ import java.awt.Point;
 public class PredatorPray{
 	
 	public static void main(String[] args) {
-		runSimulation(10,1,20);
+		runSimulation(7,2,20);
 	}
 	/////runs a simulation of a pray and a predator in a grid.///////
 	public static void runSimulation(int n, int s, int t) {
@@ -40,7 +40,7 @@ public class PredatorPray{
 		int [] curPray=positionUpdate(pray,n,s);
 		pray.x=curPray[0];
 		pray.y=curPray[1];
-		int [] curPred=positionUpdate_predator(pray, predator,s);
+		int [] curPred=positionUpdate_predator(pray, predator,s,n);
 		predator.x=curPred[0];
 		predator.y=curPred[1];
 		
@@ -68,44 +68,44 @@ public class PredatorPray{
 		 int p2 =x.y-s+rand.nextInt((2*s)+1);
 		 
 		 //checks if both coordinates are out of bounds
-		 if(!(p1>0&&p1<n)&&!(p2>0&&p2<n)) {
+		 if(!(p1>=0&&p1<n)&&!(p2>=0&&p2<n)) {
 			if(p1<0&&p2<0) {
 				p1=0;
 				p2=0;
 			}
 			else if (p1>n&&p2<0) {
-				p1=n;
+				p1=n-1;
 				p2=0;
 			}
 			else if (p1<0&&p2>n) {
 				p1=0;
-				p2=n;
+				p2=n-1;
 			}
 			else {
-				p1=n;
-				p2=n;
+				p1=n-1;
+				p2=n-1;
 			}
 		 }
 		 //checks if only the y-coordinate is out of bounds
-		 else if((p1>0&&p1<n)&&!(p2>0&&p2<n)) {
+		 else if((p1>=0&&p1<n)&&!(p2>=0&&p2<n)) {
 			 p1=closestNumber(p1,n,0);
 			 if (p2<0) {
 				 p2=0;
 				 
 			 }
 			 else {
-				 p2=n;
+				 p2=n-1;
 			 }
 				
 		 }
 		//checks if only the x-coordinate is out of bounds
-		 else if(!(p1>0&&p1<n)&&(p2>0&&p2<n)) {
+		 else if(!(p1>=0&&p1<n)&&(p2>=0&&p2<n)) {
 			 p2=closestNumber(p2,n,0);
 			 if (p1<0) {
 				 p1=0; 
 			 }
 			 else {
-				 p1=n;
+				 p1=n-1;
 			 }
 		 }
 		 
@@ -114,7 +114,7 @@ public class PredatorPray{
 	}
 	//////This method the value p is closest to, argo 0 or n //////
 	public static int closestNumber(int p, int high, int low) {
-		if(p>high-p) {
+		if(p>Math.abs(high-p)) {
 			p=high;
 		}
 		else {
@@ -122,22 +122,74 @@ public class PredatorPray{
 		}
 		return p;
 	}
-	public static int[] positionUpdate_predator(Point pray, Point predator,int s) {
+	public static int[] positionUpdate_predator(Point pray, Point predator,int s, int n) {
 		int newP1 =predator.x;
 		int newP2 = predator.y;
 		
 		if (Math.abs(pray.x-predator.x)<=s) {
 			newP1 += pray.x-predator.x;
 		}
-		else {
-			newP1 +=closestNumber(newP1,s,-s);
+		else if  (Math.abs(pray.x-predator.x)>s){
+		    if (pray.x-predator.x<0){
+		        newP1+=-s;
+		    }
+			else{
+			    newP1+=s;
+			}
 		}
 		if (Math.abs(pray.y-predator.y)<=s) {
 			newP2 += pray.y-predator.y;
 		}
-		else {
-			newP2 +=closestNumber(newP2,s,-s);
+		else if (Math.abs(pray.y-predator.y)>s) {
+			if (pray.y-predator.y<0){
+		        newP2+=-s;
+		    }
+			else{
+			    newP2+=s;
+			}
 		}
+		System.out.println(newP1+" "+newP2);
+		if(!(newP1>=0&&newP1<n)&&!(newP2>=0&&newP2<n)) {
+			if(newP1<0&&newP2<0) {
+				newP1=0;
+				newP2=0;
+			}
+			else if (newP1>n&&newP2<0) {
+				newP1=n-1;
+				newP2=0;
+			}
+			else if (newP1<0&&newP2>n) {
+				newP1=0;
+				newP2=n-1;
+			}
+			else {
+				newP1=n-1;
+				newP2=n-1;
+			}
+		 }
+		 //checks if only the y-coordinate is out of bounds
+		 else if((newP1>=0&&newP1<n)&&!(newP2>=0&&newP2<n)) {
+			 newP1=closestNumber(newP1,n,0);
+			 if (newP2<0) {
+				 newP2=0;
+				 
+			 }
+			 else {
+				 newP2=n-1;
+			 }
+				
+		 }
+		//checks if only the x-coordinate is out of bounds
+		 else if(!(newP1>=0&&newP1<n)&&(newP2>=0&&newP2<n)) {
+			 newP2=closestNumber(newP2,n,0);
+			 if (newP1<0) {
+				 newP1=0; 
+			 }
+			 else {
+				 newP1=n-1;
+			 }
+		 }
+		
 		int[] Arr = {newP1,newP2};
 		return Arr;
 	}
