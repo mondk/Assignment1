@@ -4,10 +4,15 @@ import java.awt.Point;
 public class PredatorPray{
 	
 	public static void main(String[] args) {
-		runSimulation(20,2,20);
+		runSimulation(10,1,20);
 	}
 	/////runs a simulation of a pray and a predator in a grid.///////
 	public static void runSimulation(int n, int s, int t) {
+		if(n<1||s<1||t<0) {
+			System.out.println("n="+n+" s="+s+" t="+t);
+			System.out.println("Illegal Parameters!");
+			return;
+		}
 		//constant for victory
 		int cat = 0;
 		
@@ -25,36 +30,37 @@ public class PredatorPray{
 			}
 		}
 		//Show positions before simulation
-		System.out.println("Pray position:"+pray);
-		System.out.println("Pray position:"+predator);
+		System.out.println("n="+n+" s="+s+" t="+t);
+		System.out.println("");
+		System.out.println("["+pray.x+","+pray.y+"]"+" "+"["+predator.x+","+predator.y+"]");
 		System.out.println("");
 		
 		for(int i =0;i<t;i++) {
 		//Pray and Predator positions are updated
-		int [] curPray=positionUpdate(pray,n,s,"pray");
+		int [] curPray=positionUpdate(pray,n,s);
 		pray.x=curPray[0];
 		pray.y=curPray[1];
-		int [] curPred=positionUpdate(predator,n,s,"predator");
+		int [] curPred=positionUpdate_predator(pray, predator,s);
 		predator.x=curPred[0];
 		predator.y=curPred[1];
 		
-		System.out.println("Pray position:"+pray);
-		System.out.println("Pray position:"+predator);
+		System.out.println("["+pray.x+","+pray.y+"]"+" "+"["+predator.x+","+predator.y+"]");
 		System.out.println("");
 		
 		//Checks if pray has been caught
 		if (curPred[0]==curPray[0]&&curPred[1]==curPray[1]) {
-			System.out.println("Catch");
+			System.out.println("Catch!");
 			cat++;
 			break;
 		}
 		}
+		//checks if predator failed
 		if(!(cat==1)) {
-			System.out.println("Failure");
+			System.out.println("Failure!");
 		}
 	}
-	//////This method create new positions for the pray and predator////////
-	public static int[] positionUpdate(Point x,int n, int s,String type) {
+	//////This method create new position for the pray ////////
+	public static int[] positionUpdate(Point x,int n, int s) {
 		
 		//random distance from [-s;s] is added to current position
 		 Random rand = new Random();
@@ -82,7 +88,7 @@ public class PredatorPray{
 		 }
 		 //checks if only the y-coordinate is out of bounds
 		 else if((p1>0&&p1<n)&&!(p2>0&&p2<n)) {
-			 p1=closestNumber(p1,n);
+			 p1=closestNumber(p1,n,0);
 			 if (p2<0) {
 				 p2=0;
 				 
@@ -94,7 +100,7 @@ public class PredatorPray{
 		 }
 		//checks if only the x-coordinate is out of bounds
 		 else if(!(p1>0&&p1<n)&&(p2>0&&p2<n)) {
-			 p2=closestNumber(p2,n);
+			 p2=closestNumber(p2,n,0);
 			 if (p1<0) {
 				 p1=0; 
 			 }
@@ -107,13 +113,32 @@ public class PredatorPray{
 		 return Arr;
 	}
 	//////This method the value p is closest to, argo 0 or n //////
-	public static int closestNumber(int p, int n) {
-		if(p>n-p) {
-			p=n;
+	public static int closestNumber(int p, int high, int low) {
+		if(p>high-p) {
+			p=high;
 		}
 		else {
-			p=0;
+			p=low;
 		}
 		return p;
+	}
+	public static int[] positionUpdate_predator(Point pray, Point predator,int s) {
+		int newP1 =predator.x;
+		int newP2 = predator.y;
+		
+		if (Math.abs(pray.x-predator.x)<=s) {
+			newP1 += pray.x-predator.x;
+		}
+		else {
+			newP1 +=closestNumber(newP1,s,-s);
+		}
+		if (Math.abs(pray.y-predator.y)<=s) {
+			newP2 += pray.y-predator.y;
+		}
+		else {
+			newP2 +=closestNumber(newP2,s,-s);
+		}
+		int[] Arr = {newP1,newP2};
+		return Arr;
 	}
 }
