@@ -1,11 +1,11 @@
 import java.util.*;
 import java.awt.Point;
 
-public class PredatorPray{
+public class PredatorPray_Jasper{
 	
 	public static void main(String[] args) {
 		
-		runSimulation(20,1,20);
+		runSimulation(30,1,100);
 		
 	}
 	/////runs a simulation of a pray and a predator in a grid.///////
@@ -16,7 +16,7 @@ public class PredatorPray{
 			return;
 		}
 		//constant for victory
-		int cat = 0;
+		boolean cat = false;
 		
 		// Initial positions of pray and predator
 		Random rand = new Random();
@@ -32,7 +32,8 @@ public class PredatorPray{
 			System.out.println("Catch!");
 			return;
 		}
-		for(int i =0;i<t;i++) {
+		int i = 0;
+		while (i < t && cat == false) {
 		//Pray and Predator positions are updated
 		int [] curPray=positionUpdate(pray,n,s);
 		pray.x=curPray[0];
@@ -47,12 +48,11 @@ public class PredatorPray{
 		//Checks if pray has been caught
 		if (curPred[0]==curPray[0]&&curPred[1]==curPray[1]) {
 			System.out.println("Catch!");
-			cat++;
-			break;
-		}
+			cat = true;
+			}
 		}
 		//checks if predator failed
-		if(!(cat==1)) {
+		if(cat==false) {
 			System.out.println("Failure!");
 		}
 	}
@@ -63,28 +63,10 @@ public class PredatorPray{
 		 Random rand = new Random();
 		 int p1 =x.x-s+rand.nextInt((2*s)+1);
 		 int p2 =x.y-s+rand.nextInt((2*s)+1);
+		
 		 
-		 //checks if both coordinates are out of bounds
-		 if(!(p1>=0&&p1<n)&&!(p2>=0&&p2<n)) {
-			if(p1<0&&p2<0) {
-				p1=0;
-				p2=0;
-			}
-			else if (p1>n&&p2<0) {
-				p1=n-1;
-				p2=0;
-			}
-			else if (p1<0&&p2>n) {
-				p1=0;
-				p2=n-1;
-			}
-			else {
-				p1=n-1;
-				p2=n-1;
-			}
-		 }
 		 //checks if only the y-coordinate is out of bounds
-		 else if((p1>=0&&p1<n)&&!(p2>=0&&p2<n)) {
+		 if((p1>=0&&p1<n)&&!(p2>=0&&p2<n)) {
 			 p1=closestNumber(p1,n,0);
 			 if (p2<0) {
 				 p2=0;
@@ -96,7 +78,7 @@ public class PredatorPray{
 				
 		 }
 		//checks if only the x-coordinate is out of bounds
-		 else if(!(p1>=0&&p1<n)&&(p2>=0&&p2<n)) {
+		 if(!(p1>=0&&p1<n)&&(p2>=0&&p2<n)) {
 			 p2=closestNumber(p2,n,0);
 			 if (p1<0) {
 				 p1=0; 
@@ -105,6 +87,7 @@ public class PredatorPray{
 				 p1=n-1;
 			 }
 		 }
+		 
 		 
 		 int[] Arr = {p1,p2};
 		 return Arr;
@@ -146,26 +129,8 @@ public class PredatorPray{
 			}
 		}
 		
-		if(!(newP1>=0&&newP1<n)&&!(newP2>=0&&newP2<n)) {
-			if(newP1<0&&newP2<0) {
-				newP1=0;
-				newP2=0;
-			}
-			else if (newP1>n&&newP2<0) {
-				newP1=n-1;
-				newP2=0;
-			}
-			else if (newP1<0&&newP2>n) {
-				newP1=0;
-				newP2=n-1;
-			}
-			else {
-				newP1=n-1;
-				newP2=n-1;
-			}
-		 }
 		 //checks if only the y-coordinate is out of bounds
-		 else if((newP1>=0&&newP1<n)&&!(newP2>=0&&newP2<n)) {
+		 if((newP1>=0&&newP1<n)&&!(newP2>=0&&newP2<n)) {
 			 newP1=closestNumber(newP1,n,0);
 			 if (newP2<0) {
 				 newP2=0;
@@ -177,7 +142,7 @@ public class PredatorPray{
 				
 		 }
 		//checks if only the x-coordinate is out of bounds
-		 else if(!(newP1>=0&&newP1<n)&&(newP2>=0&&newP2<n)) {
+		 if(!(newP1>=0&&newP1<n)&&(newP2>=0&&newP2<n)) {
 			 newP2=closestNumber(newP2,n,0);
 			 if (newP1<0) {
 				 newP1=0; 
