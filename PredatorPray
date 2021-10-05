@@ -25,9 +25,9 @@ public class PredatorPray{
 		
 		//Show positions before simulation
 		System.out.println("n="+n+" s="+s+" t="+t);
-		System.out.println("");
-		System.out.println("["+pray.x+";"+pray.y+"]"+" "+"["+predator.x+";"+predator.y+"]");
-		System.out.println("");
+		
+		System.out.println("["+pray.x+";"+pray.y+"]"+"["+predator.x+";"+predator.y+"]");
+		
 		if(pray.x==predator.x&&pray.y==predator.y) {
 			System.out.println("Catch!");
 			return;
@@ -42,7 +42,7 @@ public class PredatorPray{
 		predator.y=curPred[1];
 		
 		System.out.println("["+pray.x+";"+pray.y+"]"+" "+"["+predator.x+";"+predator.y+"]");
-		System.out.println("");
+		
 		
 		//Checks if pray has been caught
 		if (curPred[0]==curPray[0]&&curPred[1]==curPray[1]) {
