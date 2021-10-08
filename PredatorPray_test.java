@@ -1,7 +1,7 @@
 import java.util.*;
 import java.awt.Point;
 
-public class PredatorPray_test{
+public class PredatorPray{
 	
 	public static void main(String[] args) {
 		
